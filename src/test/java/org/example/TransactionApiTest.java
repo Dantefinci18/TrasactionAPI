@@ -1,5 +1,8 @@
 package org.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.controller.TransactionApiController;
+import org.example.dto.TransactionRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +18,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TransactionApiTest {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
-    @Disabled
     public void realizarUnaTransaccionRespondeOK() throws Exception {
-        String body = """
-                { "amount": 5000,
-                "type": "cars"
-                }""";
+        TransactionRequest request = new TransactionRequest(5000,"cars");
 
         mockMvc.perform(put("/transactions/10")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
     }
 
