@@ -1,7 +1,6 @@
-package org.example;
+package org.example.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.controller.TransactionApiController;
 import org.example.dto.TransactionIdsResponse;
 import org.example.dto.TransactionRequest;
 import org.junit.jupiter.api.Disabled;
@@ -19,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(TransactionApiController.class)
-public class TransactionApiTest {
+public class TransactionApiControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
