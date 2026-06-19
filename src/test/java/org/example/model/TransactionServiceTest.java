@@ -1,10 +1,12 @@
 package org.example.model;
+import net.bytebuddy.dynamic.DynamicType;
 import org.example.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
 import org.mockito.ArgumentCaptor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,5 +39,17 @@ public class TransactionServiceTest {
     public void seObtieneLaSumaDeTransacionesConectadasEntreParentIdYTransaccionId(){
         double suma = this.transactionService.getTransactionSum(10);
         assertEquals(20000,suma);
+    }
+
+    @Test
+    @Disabled
+    public void seObtieneLaSumaDeLasTransaccionesDeLasSubRamas(){
+        Optional<Transaction> transactionOptional = Optional.of(new Transaction(11, 10000, "shopping",null));
+        when(transactionRepository.findById(11L)).thenReturn(transactionOptional);
+        when(transactionRepository.findByParentId(11L))
+                .thenReturn(List.of(new Transaction(12, 15000, "shopping",null)));
+
+        double suma = this.transactionService.getTransactionSum(11);
+        assertEquals(15000,suma);
     }
 }
