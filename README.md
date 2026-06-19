@@ -6,23 +6,23 @@
 
 ## Requisitos
 - Java 21
-- Docker >= 29.5.2
-- Docker compose >= 5.1.4
+- Docker
+- Docker compose v2+
 
-## Compilar el proyecto
+## Compilación del proyecto
 ```bash
 ./mvnw clean package
 ```
 
-## Ejecutar los tests
+## Ejecución de los tests
 ```bash
-  ./mvnw test
-  ```
+./mvnw test
+```
 
-## Ejecucion del Proyecto
+## Ejecución del Proyecto
 ### 1. Levantar Docker
 ```bash
- docker compose up -d
+docker compose up -d
 ```
 
 ### 2. Ejecutar la API
@@ -31,7 +31,7 @@
 ```
 
 ### 3. Enlace al Swagger
-   http://localhost:8080/swagger-ui/index.html
+[Swagger UI](http://localhost:8080/swagger-ui/index.html)
 
 ### 4. Detener servicios Docker
 ```bash
