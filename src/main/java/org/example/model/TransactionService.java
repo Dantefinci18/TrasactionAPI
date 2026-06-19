@@ -14,8 +14,8 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
-    public void create(long transaction_id, int amount, String type){
-        this.transactionRepository.save(new Transaction(transaction_id,amount,type));
+    public void create(long transaction_id, double amount, String type, Long parenntId){
+        this.transactionRepository.save(new Transaction(transaction_id,amount,type,parenntId));
     }
 
     public ArrayList<Long> getTransactionIdsType(String type){

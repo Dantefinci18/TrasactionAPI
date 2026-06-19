@@ -11,13 +11,6 @@ public class Transaction {
     private final String type;
     private final Long parentId;
 
-    public Transaction(long id, double amount, String type){
-        this.id = id;
-        this.amount = amount;
-        this.type = type;
-        this.parentId = null;
-    }
-
     public Transaction(long id, double amount, String type, Long parentId){
         this.id = id;
         this.amount = amount;

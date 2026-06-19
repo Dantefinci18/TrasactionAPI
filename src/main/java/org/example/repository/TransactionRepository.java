@@ -3,6 +3,6 @@ import org.example.model.Transaction;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
-public interface TransactionRepository extends MongoRepository<Transaction,Integer> {
+public interface TransactionRepository extends MongoRepository<Transaction,Long> {
     List<Transaction> findByType(String type);
 }

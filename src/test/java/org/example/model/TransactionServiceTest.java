@@ -15,7 +15,7 @@ public class TransactionServiceTest {
 
     @Test
     public void sePersisteElRegistroDeUnaTransaccion(){
-        this.transactionService.create(10,5000,"cars");
+        this.transactionService.create(10L,5000,"cars",null);
         ArgumentCaptor<Transaction> transactionCaptor = ArgumentCaptor.forClass(Transaction.class);
         verify(this.transactionRepository).save(transactionCaptor.capture());
         Transaction transaction = transactionCaptor.getValue();
@@ -27,7 +27,7 @@ public class TransactionServiceTest {
     @Test
     public void seObtieneElPadreDelTipoDeTransaccion(){
         when(transactionRepository.findByType("cars"))
-                .thenReturn(List.of(new Transaction(10, 5000, "cars")));
+                .thenReturn(List.of(new Transaction(10, 5000, "cars",null)));
 
         ArrayList<Long> resultIds = this.transactionService.getTransactionIdsType("cars");
         assertEquals(List.of(10L),resultIds);
