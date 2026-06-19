@@ -1,5 +1,4 @@
 package org.example.model;
-import net.bytebuddy.dynamic.DynamicType;
 import org.example.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
@@ -37,19 +36,48 @@ public class TransactionServiceTest {
 
     @Test
     public void seObtieneLaSumaDeTransacionesConectadasEntreParentIdYTransaccionId(){
+        Optional<Transaction> transactionOptional = Optional.of(new Transaction(10, 5000, "cars",null));
+        when(transactionRepository.findById(10L)).thenReturn(transactionOptional);
+        when(transactionRepository.findByParentId(10L))
+                .thenReturn(List.of(new Transaction(11, 10000, "shopping",null)));
+        when(transactionRepository.findByParentId(11L))
+                .thenReturn(List.of(new Transaction(12, 5000, "shopping",null)));
         double suma = this.transactionService.getTransactionSum(10);
         assertEquals(20000,suma);
     }
 
     @Test
-    @Disabled
     public void seObtieneLaSumaDeLasTransaccionesDeLasSubRamas(){
         Optional<Transaction> transactionOptional = Optional.of(new Transaction(11, 10000, "shopping",null));
         when(transactionRepository.findById(11L)).thenReturn(transactionOptional);
         when(transactionRepository.findByParentId(11L))
-                .thenReturn(List.of(new Transaction(12, 15000, "shopping",null)));
+                .thenReturn(List.of(new Transaction(12, 5000, "shopping",null)));
 
         double suma = this.transactionService.getTransactionSum(11);
         assertEquals(15000,suma);
+    }
+
+    @Test
+    public void seObieneLaSumaDeDosSubtransaciones(){
+        Optional<Transaction> transactionOptional = Optional.of(new Transaction(10, 5000, "cars", null));
+        when(transactionRepository.findById(10L)).thenReturn(transactionOptional);
+
+        when(transactionRepository.findByParentId(10L))
+                .thenReturn(List.of(
+                        new Transaction(11, 10000, "shopping", null),
+                        new Transaction(13, 5000, "shopping", null)
+                ));
+
+        when(transactionRepository.findByParentId(11L))
+                .thenReturn(List.of(
+                        new Transaction(12, 15000, "shopping", null),
+                        new Transaction(14, 5000, "shopping", null)
+                ));
+
+        when(transactionRepository.findByParentId(13L))
+                .thenReturn(List.of(new Transaction(15, 5000, "shopping", null)));
+
+        double suma = this.transactionService.getTransactionSum(10);
+        assertEquals(45000, suma);
     }
 }

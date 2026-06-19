@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import  java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -29,7 +30,21 @@ public class TransactionService {
         return transactionsIdsType;
     }
 
-    public double getTransactionSum(long tansaction_id){
-        return 20000;
+    public double getTransactionSum(long transactionId) {
+        Optional<Transaction> transactionOptional = this.transactionRepository.findById(transactionId);
+        if (transactionOptional.isEmpty()) {
+            return 0;
+        }
+        return sumTransaction(transactionOptional.get());
+    }
+
+    private double sumTransaction(Transaction transaction) {
+        double suma = transaction.getAmount();
+        List<Transaction> subtransactions =
+                this.transactionRepository.findByParentId(transaction.getId());
+        for (Transaction subtransaction : subtransactions) {
+            suma += sumTransaction(subtransaction); // reuse the object, no findById needed
+        }
+        return suma;
     }
 }
