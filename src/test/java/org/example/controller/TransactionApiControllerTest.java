@@ -10,8 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,16 +37,11 @@ public class TransactionApiControllerTest {
     @Test
     @Disabled
     public void seRealizaUnaTransaccionDeAutosYSeObtieneElIdAlBuscarPorTipoAutos() throws Exception{
-        TransactionRequest firstRequest = new TransactionRequest(5000,"cars",null);
-        TransactionRequest secondRequest = new TransactionRequest(10000,"shopping", 10);
-        TransactionRequest thirdRequest = new TransactionRequest(5000,"shopping", 11);
-
-        for(TransactionRequest request : List.of(firstRequest,secondRequest,thirdRequest) ) {
+        TransactionRequest request = new TransactionRequest(5000,"cars",null);
             mockMvc.perform(put("/transactions/10")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isOk());
-        }
 
         String responseBody = mockMvc.perform(get("/transactions/types/cars")).andReturn().getResponse().getContentAsString();
         TransactionIdsResponse response = objectMapper.readValue(responseBody, TransactionIdsResponse.class);

@@ -3,15 +3,29 @@ package org.example.model;
 import org.example.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class TransactionService {
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
     public TransactionService(TransactionRepository transactionRepository){
         this.transactionRepository = transactionRepository;
     }
 
-    public void create(Integer transaction_id, int amount, String type){
-        transactionRepository.save(new Transaction(transaction_id,amount,type));
+    public void create(long transaction_id, int amount, String type){
+        this.transactionRepository.save(new Transaction(transaction_id,amount,type));
+    }
+
+    public ArrayList<Long> getTransactionIdsType(String type){
+        List<Transaction> transactionsType = this.transactionRepository.findByType(type);
+        ArrayList<Long> transactionsIdsType = new ArrayList<>();
+
+        for(Transaction transaction: transactionsType){
+            transactionsIdsType.add(transaction.getId());
+        }
+
+        return transactionsIdsType;
     }
 }

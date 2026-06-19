@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/transactions")
 public class TransactionApiController {
     @PutMapping("{transaction_id}")
-    public ResponseEntity<?> createTransaction(@PathVariable Integer transaction_id, @RequestBody TransactionRequest request) {
+    public ResponseEntity<?> createTransaction(@PathVariable long transaction_id, @RequestBody TransactionRequest request) {
         return ResponseEntity.ok().build();
     }
 
