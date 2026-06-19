@@ -55,7 +55,6 @@ public class TransactionApiControllerTest {
     }
 
     @Test
-    @Disabled
     public void seObtieneLaSumaDeLasTransaccionesConectadasPorSuPrentIdATransaccionId() throws Exception {
         TransactionRequest firstRequest = new TransactionRequest(5000,"cars",null);
         TransactionRequest secondRequest = new TransactionRequest(10000,"shopping",10L);

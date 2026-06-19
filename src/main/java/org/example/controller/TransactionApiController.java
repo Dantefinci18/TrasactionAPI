@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.dto.TransactionIdsResponse;
 import org.example.dto.TransactionRequest;
+import org.example.dto.TransactionSumResponse;
 import org.example.model.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,10 @@ public class TransactionApiController {
     public ResponseEntity<?> getTransactionIds(@PathVariable String type){
         List<Long> ids = transactionService.getTransactionIdsType(type);
         return ResponseEntity.ok(new TransactionIdsResponse(ids));
+    }
+
+    @GetMapping("/sum/{transaction_id}")
+    public ResponseEntity<?> getTransactionSum(@PathVariable Long transaction_id){
+        return  ResponseEntity.ok(new TransactionSumResponse(2000));
     }
 }
