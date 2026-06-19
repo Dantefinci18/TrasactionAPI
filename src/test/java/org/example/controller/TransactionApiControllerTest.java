@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.dto.TransactionIdsResponse;
 import org.example.dto.TransactionRequest;
 import org.example.dto.TransactionSumResponse;
+import org.example.model.ParentIdError;
 import org.example.model.TransactionService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -63,5 +65,15 @@ public class TransactionApiControllerTest {
         String responseBody = mockMvc.perform(get("/transactions/sum/11")).andReturn().getResponse().getContentAsString();
         TransactionSumResponse response = this.objectMapper.readValue(responseBody, TransactionSumResponse.class);
         assertEquals(15000,response.sum());
+    }
+
+    @Test
+    @Disabled
+    public void seLanzaErrorSiSeRegistraUnaTransaccionConParentIdQueNoTieneUnaTransaccion() throws Exception {
+        TransactionRequest request = new TransactionRequest(5000,"cars",2L);
+        doThrow(new ParentIdError()).when(transactionService).create(10, 5000, "cars", 2L);
+        mockMvc.perform(put("/transactions/10").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound());
     }
 }
