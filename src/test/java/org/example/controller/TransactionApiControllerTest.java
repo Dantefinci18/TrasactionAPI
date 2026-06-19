@@ -71,6 +71,5 @@ public class TransactionApiControllerTest {
         String responseBody = mockMvc.perform(get("/transactions/sum/10")).andReturn().getResponse().getContentAsString();
         TransactionSumResponse response = this.objectMapper.readValue(responseBody, TransactionSumResponse.class);
         assertEquals(2000,response.sum());
-
     }
 }

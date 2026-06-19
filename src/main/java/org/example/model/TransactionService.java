@@ -28,4 +28,8 @@ public class TransactionService {
 
         return transactionsIdsType;
     }
+
+    public double getTransactionSum(long tansaction_id){
+        return 2000;
+    }
 }

@@ -32,4 +32,10 @@ public class TransactionServiceTest {
         ArrayList<Long> resultIds = this.transactionService.getTransactionIdsType("cars");
         assertEquals(List.of(10L),resultIds);
     }
+
+    @Test
+    public void seObtieneLaSumaDeTransacionesConectadasEntreParentIdYTransaccionId(){
+        double suma = this.transactionService.getTransactionSum(10);
+        assertEquals(2000,suma);
+    }
 }
