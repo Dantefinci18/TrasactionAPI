@@ -1,13 +1,11 @@
 package org.example.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.dto.TransactionIdsResponse;
 import org.example.dto.TransactionRequest;
 import org.example.dto.TransactionSumResponse;
 import org.example.model.ParentIdError;
 import org.example.model.TransactionService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -44,11 +42,21 @@ public class TransactionApiControllerTest {
     }
 
     @Test
-    public void seObtieneElIdAlBuscarPorTipoAutos() throws Exception{
-        when(this.transactionService.getTransactionIdsType("cars")).thenReturn(new ArrayList<>(List.of(10L)));
-        String responseBody = this.mockMvc.perform(get("/transactions/types/cars")).andReturn().getResponse().getContentAsString();
-        TransactionIdsResponse response = this.objectMapper.readValue(responseBody, TransactionIdsResponse.class);
-        assertEquals(List.of(10L), response.transactionIds());
+    public void seObtieneElIdAlBuscarPorTipoAutos() throws Exception {
+        when(this.transactionService.getTransactionIdsType("cars"))
+                .thenReturn(new ArrayList<>(List.of(10L)));
+
+        String responseBody = this.mockMvc.perform(get("/transactions/types/cars"))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<Long> response = this.objectMapper.readValue(
+                responseBody,
+                new TypeReference<List<Long>>() {}
+        );
+
+        assertEquals(List.of(10L), response);
     }
 
     @Test

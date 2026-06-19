@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
 import org.mockito.ArgumentCaptor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import java.util.Optional;
 
@@ -79,5 +80,14 @@ public class TransactionServiceTest {
 
         double suma = this.transactionService.getTransactionSum(10);
         assertEquals(45000, suma);
+    }
+
+    @Test
+    public void seLanzaErrorSiSeCreaUnParentIdQueNoTieneTranactionId(){
+        when(this.transactionRepository.findById(13L)).thenReturn(Optional.empty());
+
+            assertThrows(ParentIdError.class, () -> {
+                this.transactionService.create(11L, 10000, "cars", 13L);
+            });
     }
 }

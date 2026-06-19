@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.dto.ErrorResponse;
-import org.example.dto.TransactionIdsResponse;
 import org.example.dto.TransactionRequest;
 import org.example.dto.TransactionSumResponse;
 import org.example.model.ParentIdError;
@@ -23,7 +22,7 @@ public class TransactionApiController {
     @PutMapping("{transaction_id}")
     public ResponseEntity<?> createTransaction(@PathVariable Long transaction_id, @RequestBody TransactionRequest request) {
         try{
-            this.transactionService.create(transaction_id, request.amount(), request.type(),request.parentId());
+            this.transactionService.create(transaction_id, request.amount(), request.type(),request.parent_id());
         }catch (ParentIdError e){
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
@@ -32,9 +31,8 @@ public class TransactionApiController {
     }
 
     @GetMapping("/types/{type}")
-    public ResponseEntity<?> getTransactionIds(@PathVariable String type){
-        List<Long> ids = transactionService.getTransactionIdsType(type);
-        return ResponseEntity.ok(new TransactionIdsResponse(ids));
+    public List<Long> getTransactionIds(@PathVariable String type){
+        return transactionService.getTransactionIdsType(type);
     }
 
     @GetMapping("/sum/{transaction_id}")

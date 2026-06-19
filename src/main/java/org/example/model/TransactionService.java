@@ -15,11 +15,11 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
-    public void create(long transaction_id, double amount, String type, Long parenntId){
-        if(parenntId !=null && this.transactionRepository.findById(transaction_id).isEmpty()){
+    public void create(long transaction_id, double amount, String type, Long parentId){
+        if(parentId !=null && this.transactionRepository.findById(parentId).isEmpty()){
             throw new ParentIdError();
         }
-        this.transactionRepository.save(new Transaction(transaction_id,amount,type,parenntId));
+        this.transactionRepository.save(new Transaction(transaction_id,amount,type,parentId));
     }
 
     public ArrayList<Long> getTransactionIdsType(String type){
