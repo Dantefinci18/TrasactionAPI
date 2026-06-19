@@ -32,6 +32,7 @@ public class TransactionApiController {
 
     @GetMapping("/sum/{transaction_id}")
     public ResponseEntity<?> getTransactionSum(@PathVariable Long transaction_id){
-        return  ResponseEntity.ok(new TransactionSumResponse(20000));
+        double sum = this.transactionService.getTransactionSum(transaction_id);
+        return  ResponseEntity.ok(new TransactionSumResponse(sum));
     }
 }

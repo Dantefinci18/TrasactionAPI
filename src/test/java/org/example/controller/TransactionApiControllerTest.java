@@ -43,11 +43,6 @@ public class TransactionApiControllerTest {
 
     @Test
     public void seObtieneElIdAlBuscarPorTipoAutos() throws Exception{
-        TransactionRequest request = new TransactionRequest(5000,"cars",null);
-
-        this.mockMvc.perform(put("/transactions/10").contentType(MediaType.APPLICATION_JSON)
-                            .content(this.objectMapper.writeValueAsString(request))).andExpect(status().isOk());
-
         when(this.transactionService.getTransactionIdsType("cars")).thenReturn(new ArrayList<>(List.of(10L)));
         String responseBody = this.mockMvc.perform(get("/transactions/types/cars")).andReturn().getResponse().getContentAsString();
         TransactionIdsResponse response = this.objectMapper.readValue(responseBody, TransactionIdsResponse.class);
@@ -56,36 +51,15 @@ public class TransactionApiControllerTest {
 
     @Test
     public void seObtieneLaSumaDeLasTransaccionesConectadasPorSuPrentIdATransaccionId() throws Exception {
-        TransactionRequest firstRequest = new TransactionRequest(5000,"cars",null);
-        TransactionRequest secondRequest = new TransactionRequest(10000,"shopping",10L);
-        TransactionRequest thirdRequest = new TransactionRequest(5000, "shopping",11L);
-
-        this.mockMvc.perform(put("/transactions/10").contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(firstRequest))).andExpect(status().isOk());
-        this.mockMvc.perform(put("/transactions/11").contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(secondRequest))).andExpect(status().isOk());
-        this.mockMvc.perform(put("/transactions/12").contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(thirdRequest))).andExpect(status().isOk());
-
+        when(this.transactionService.getTransactionSum(10)).thenReturn(20000d);
         String responseBody = mockMvc.perform(get("/transactions/sum/10")).andReturn().getResponse().getContentAsString();
         TransactionSumResponse response = this.objectMapper.readValue(responseBody, TransactionSumResponse.class);
         assertEquals(20000,response.sum());
     }
 
     @Test
-    @Disabled
     public void seObtieneLaSumaDeLasTransacionesDeLasSubRamas() throws Exception{
-        TransactionRequest firstRequest = new TransactionRequest(5000,"cars",null);
-        TransactionRequest secondRequest = new TransactionRequest(10000,"shopping",10L);
-        TransactionRequest thirdRequest = new TransactionRequest(5000, "shopping",11L);
-
-        this.mockMvc.perform(put("/transactions/10").contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(firstRequest))).andExpect(status().isOk());
-        this.mockMvc.perform(put("/transactions/11").contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(secondRequest))).andExpect(status().isOk());
-        this.mockMvc.perform(put("/transactions/12").contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(thirdRequest))).andExpect(status().isOk());
-
+        when(this.transactionService.getTransactionSum(11)).thenReturn(15000d);
         String responseBody = mockMvc.perform(get("/transactions/sum/11")).andReturn().getResponse().getContentAsString();
         TransactionSumResponse response = this.objectMapper.readValue(responseBody, TransactionSumResponse.class);
         assertEquals(15000,response.sum());
