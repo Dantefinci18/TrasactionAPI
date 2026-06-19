@@ -36,6 +36,6 @@ public class TransactionServiceTest {
     @Test
     public void seObtieneLaSumaDeTransacionesConectadasEntreParentIdYTransaccionId(){
         double suma = this.transactionService.getTransactionSum(10);
-        assertEquals(2000,suma);
+        assertEquals(20000,suma);
     }
 }

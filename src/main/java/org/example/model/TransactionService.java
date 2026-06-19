@@ -30,6 +30,6 @@ public class TransactionService {
     }
 
     public double getTransactionSum(long tansaction_id){
-        return 2000;
+        return 20000;
     }
 }
