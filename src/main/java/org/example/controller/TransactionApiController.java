@@ -1,8 +1,10 @@
 package org.example.controller;
 
+import org.example.dto.ErrorResponse;
 import org.example.dto.TransactionIdsResponse;
 import org.example.dto.TransactionRequest;
 import org.example.dto.TransactionSumResponse;
+import org.example.model.ParentIdError;
 import org.example.model.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,12 @@ public class TransactionApiController {
 
     @PutMapping("{transaction_id}")
     public ResponseEntity<?> createTransaction(@PathVariable Long transaction_id, @RequestBody TransactionRequest request) {
-        this.transactionService.create(transaction_id,request.amount(),request.type(),request.parentId());
+        try{
+            this.transactionService.create(transaction_id, request.amount(), request.type(),request.parentId());
+        }catch (ParentIdError e){
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        }
+
         return ResponseEntity.ok().build();
     }
 

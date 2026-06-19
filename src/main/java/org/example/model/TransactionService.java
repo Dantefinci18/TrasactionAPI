@@ -16,6 +16,9 @@ public class TransactionService {
     }
 
     public void create(long transaction_id, double amount, String type, Long parenntId){
+        if(parenntId !=null && this.transactionRepository.findById(transaction_id).isEmpty()){
+            throw new ParentIdError();
+        }
         this.transactionRepository.save(new Transaction(transaction_id,amount,type,parenntId));
     }
 

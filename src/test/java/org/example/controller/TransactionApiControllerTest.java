@@ -68,12 +68,11 @@ public class TransactionApiControllerTest {
     }
 
     @Test
-    @Disabled
     public void seLanzaErrorSiSeRegistraUnaTransaccionConParentIdQueNoTieneUnaTransaccion() throws Exception {
         TransactionRequest request = new TransactionRequest(5000,"cars",2L);
         doThrow(new ParentIdError()).when(transactionService).create(10, 5000, "cars", 2L);
         mockMvc.perform(put("/transactions/10").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 }
